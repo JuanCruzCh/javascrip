@@ -1,35 +1,3 @@
-/*function Repuestos() {
-    var opcion
-    var total = 0
-
-    do {
-        opcion = Number(prompt("Ingrese un repuesto \n1 Embrague \n2 Discos \n3 Pastillas de freno \n4 Bujias \n0 salir"))
-        if (opcion === 1) {
-            total = AgregarAlCarrito("Embrague ", 5000, total)
-        }
-        else if (opcion === 2) {
-            total = AgregarAlCarrito("Discos ", 2300, total)
-        } else if (opcion === 3) {
-            total = AgregarAlCarrito("Pastilla de freno ", 500, total)
-        } else if (opcion === 4) {
-            total = AgregarAlCarrito("Bujias ", 250, total)
-        }
-    } while (opcion !== 0);
-    alert("El total de su compra es de " + total + " en efectivo ")
-}
-
-
-function AgregarAlCarrito(repuesto, PrecioPorUnidad, total) {
-    var cantidad = Number(prompt("Ingrese una cantidad"))
-    var subtotal = PrecioPorUnidad * cantidad
-    total = total + subtotal
-    alert("se agrego " + repuesto + "  por un valor de " + subtotal)
-    return total 
-}
-
-Repuestos()*/
-
-
 let ProductosCarrito = [
     { id: 1, nombre: "Disco", categoria: "Frenos", stock: 5, precio: 8000, rutaImagen: "discodefreno.jpg" },
 
@@ -47,7 +15,9 @@ let ProductosCarrito = [
 /* =================================================================== */
 function crearTarjetasDeProductos(productos) {
     let contenedorProductos = document.getElementById("contenedorProductos")
-let carrito = []
+let carrito = obtenerCarritoLS()
+renderizarCarrito()
+
 
 
     productos.forEach(producto => {
@@ -67,20 +37,30 @@ let carrito = []
 <img src=./assets/${producto.rutaImagen} />
 <h4> Precio: ${producto.precio}</h4>
 <p> ${mensaje} </p>
-<btn class="btnAgregar" id=${producto.id} >Agregar al carrito</btn>
+<button class="btnAgregar" id=${producto.id} >Agregar al carrito</button>
     `
         contenedorProductos.appendChild(tarjetaProducto)
 
         let botonAgregarAlCarrito = document.getElementById(producto.id)
         botonAgregarAlCarrito.addEventListener("click", (e) => AgregarAlCarrito(e, productos, carrito))
     });
-
+   let botonComprar = document.getElementById("botonComprar")
+   botonComprar.addEventListener("click", finalizarCompra)
 }
+
+function obtenerCarritoLS() {
+    let carrito= []
+    let carritoLS = JSON.parse(localStorage.getItem("carrito"))
+if (carritoLS) {
+    carrito = carritoLS
+}
+return carrito
+}
+
 crearTarjetasDeProductos(ProductosCarrito)
 
-
-
-function AgregarAlCarrito(e, productos, carrito) {
+function AgregarAlCarrito(e, productos) {
+    let carrito = obtenerCarritoLS()
     let idDelProducto = Number(e.target.id)
     console.log(idDelProducto)
 
@@ -100,12 +80,13 @@ function AgregarAlCarrito(e, productos, carrito) {
         })
     }
 
-    console.log(carrito)
+    localStorage.setItem("carrito", JSON.stringify(carrito))
     renderizarCarrito(carrito)
 }
 
 
-function renderizarCarrito(carrito) {
+function renderizarCarrito() {
+    let carrito = obtenerCarritoLS()
     let contenedorCarrito = document.getElementById("contenedorCarrito")
     contenedorCarrito.innerHTML = ""
     carrito.forEach(producto => {
@@ -118,54 +99,15 @@ function renderizarCarrito(carrito) {
             <p>${producto.precioUnitario}</p>
             <p>${producto.unidades}</p>
             <p>${producto.subtotal}</p>
-            <button id=eliminar${producto.id}>ELIMINAR</button>
+            <button class="btnEliminar" id=eliminar${producto.id}>ELIMINAR</button>
         `
         contenedorCarrito.appendChild(tarjetaProductoCarrito)
     })
 }
 
-/*function Buscador(){
-    let total = 0
- let buscar;
- do{ 
-    buscar  =Number(prompt('\n1 Seleccionar categoria \n2 Buscar producto \n0 Ir a pagar'))
- if(buscar === 1){
-       total= BuscarPorCategoria(total)
-    } else if(buscar === 2)
-    {
-      total = BuscarPorProducto(total)  
-}
-} while(buscar !==0)
-alert('El total de su compra es de ' + total + ' en efectivo')
-}
-Buscador()
 
-// Buscar por categoria
-function BuscarPorCategoria(total){
-let categoriaProducto = prompt('Ingrese una categoria para buscar')?.toLowerCase()
-if (categoriaProducto){
-let FiltroDeCategoria = ProductosCarrito.filter(Producto => Producto.categoria.toLowerCase().includes(categoriaProducto))
-
-let listaDeCategorias ='' 
-FiltroDeCategoria.forEach((categoria, index) => {
-    listaDeCategorias += `\n${index} ${categoria.nombre }`
-} )
-let indiceDeProducto = prompt(listaDeCategorias);
-if (indiceDeProducto <= FiltroDeCategoria.length) {
-   const producto = FiltroDeCategoria [indiceDeProducto]
-    return AgregarAlCarrito(producto.nombre, producto.precio, total)
+function finalizarCompra() {
+    localStorage.removeItem("carrito")
+renderizarCarrito([])
 }
-}
-}
-// Buscar por producto
- function BuscarPorProducto(total) {
-    let nombreProducto = prompt('ingrese nombre del producto')
-    let buscarProducto = ProductosCarrito.find(producto => producto.nombre.toLowerCase().includes(nombreProducto))
-if(buscarProducto){ 
-   return AgregarAlCarrito(buscarProducto.nombre, buscarProducto.precio, total)
-}
- }
-
- 
-*/
 

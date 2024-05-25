@@ -1,0 +1,13 @@
+[
+    { "id": 1, "nombre": "Disco", "categoria": "Frenos", "stock": 5, "precio": 8000, "rutaImagen": "discodefreno.jpg" },
+
+    { "id": 2, "nombre": "Pastilla Delantera", "categoria": "Frenos", "stock": 4, "precio": 4500, "rutaImagen": "pastillasdefreno.webp" },
+
+    { "id": 3, "nombre": "Amortiguador", "categoria": "Tren Delantero", "stock": 4, "precio": 11500, "rutaImagen": "amortiguador.jpeg" },
+
+    { "id": 4, "nombre": "Bieleta", "categoria": "Tren Delantero", "stock": 3, "precio": 3000, "rutaImagen": "bieleta.webp" },
+
+    { "id": 5, "nombre": "Bujia", "categoria": "Motor", "stock": 15, "precio": 1500, "rutaImagen": "bujias.jpg" },
+
+    { "id": 6, "nombre": "Bobina", "categoria": "Motor", "stock": 10, "precio": 3500, "rutaImagen": "bobina.jpeg" }
+]
